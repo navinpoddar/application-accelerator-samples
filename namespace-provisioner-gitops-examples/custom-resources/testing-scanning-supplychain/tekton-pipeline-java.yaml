@@ -44,3 +44,30 @@ spec:
                   echo "WARNING: No tests were run. This workload is not built with one of the currently supported frameworks (maven or gradle). If using another language/framework, update the image and the script sections of the 'pipeline.tekton.dev/developer-defined-tekton-pipeline' resource in your namespace to match your language/framework."
                   #exit 1
               fi
+---              
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: noop-testing-pipeline
+  labels:
+    apps.tanzu.vmware.com/pipeline: noop-test      
+spec:
+  params:
+    - name: source-url    
+    - name: source-revision  
+  tasks:
+    - name: test
+      params:
+        - name: source-url
+          value: $(params.source-url)
+        - name: source-revision
+          value: $(params.source-revision)
+      taskSpec:
+        params:
+          - name: source-url
+          - name: source-revision
+        steps:
+          - name: test
+            image: gradle
+            script: |-
+              echo 'Empty Test Run Completed'
