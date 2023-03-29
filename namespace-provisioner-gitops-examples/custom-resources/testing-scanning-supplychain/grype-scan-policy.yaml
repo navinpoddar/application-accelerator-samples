@@ -8,15 +8,13 @@ apiVersion: scanning.apps.tanzu.vmware.com/v1beta1
 kind: ScanPolicy
 metadata:
   name: scan-policy
-  labels:
-    'app.kubernetes.io/part-of': 'scan-system'
 spec:
   regoFile: |
     package main
 
     # Accepted Values: "Critical", "High", "Medium", "Low", "Negligible", "UnknownSeverity"
-    notAllowedSeverities := ["Critical", "High", "UnknownSeverity"]
-    ignoreCves := ["CVE-2022-22965i", "GHSA-36p3-wjmg-h94x", "CVE-2016-1000027", "GHSA-mjmj-j48q-9wg2", "GHSA-vvpx-j8f3-3w6h", "CVE-2023-0286"]
+    notAllowedSeverities := []
+    ignoreCves := []
 
     contains(array, elem) = true {
       array[_] = elem
